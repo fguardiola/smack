@@ -21,5 +21,8 @@ class ChannelVC: UIViewController {
     @IBAction func loginBtnPressed(_ sender: Any) {
         performSegue(withIdentifier: TO_LOGIN, sender: nil)
     }
-    
+    //Ib action to perform a segue from createaccount to get here
+    @IBAction func prepareForUnwind(segue:UIStoryboardSegue){
+        
+    }
 }
