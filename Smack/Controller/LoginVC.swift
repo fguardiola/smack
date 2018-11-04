@@ -22,4 +22,9 @@ class LoginVC: UIViewController {
     @IBAction func createAccountPressed(_ sender: Any) {
         performSegue(withIdentifier: TO_CREATE_ACCOUNT, sender: nil)
     }
+    @IBAction func loginPressed(_ sender: Any) {
+        //Alamofire
+        //AuthService.instance
+        
+    }
 }
