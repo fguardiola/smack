@@ -15,6 +15,7 @@ class CreateAccountVC: UIViewController {
     @IBOutlet weak var passTxt: UITextField!
     @IBOutlet weak var userImg: UIImageView!
     
+    @IBOutlet weak var avatarImg: UIImageView!
     //variables
     var avatarName: String = "profileDefault"
     // RGB color
@@ -26,7 +27,13 @@ class CreateAccountVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        if UserDataService.instance.avatarName != ""{
+            avatarName = UserDataService.instance.avatarName
+            avatarImg.image = UIImage(named: avatarName)
+            debugPrint("Avatarname:",avatarName)
+        }
+    }
     @IBAction func closeCreateBtnPressed(_ sender: Any) {
         performSegue(withIdentifier: UNWIND, sender: nil)
     }

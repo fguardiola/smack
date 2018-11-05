@@ -466,6 +466,7 @@
                         <viewLayoutGuide key="safeArea" id="GNn-Yf-l6j"/>
                     </view>
                     <connections>
+                        <outlet property="avatarImg" destination="eYi-ut-Qqm" id="2UG-WP-gU6"/>
                         <outlet property="emailTxt" destination="wkQ-Wi-WD4" id="KUt-Wx-fSY"/>
                         <outlet property="passTxt" destination="pBy-LW-sEF" id="3q4-uw-IbH"/>
                         <outlet property="userImg" destination="eYi-ut-Qqm" id="BTV-Ih-Yfq"/>
