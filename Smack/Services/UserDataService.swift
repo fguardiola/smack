@@ -70,4 +70,15 @@ class UserDataService {
         
         return colorToReturn
     }
+    
+    func logUserOut(){
+        self.id = ""
+        self.avatarColor = ""
+        self.avatarName = ""
+        self.email = ""
+        self.name = ""
+        AuthService.instance.isLoggedIn = false
+        AuthService.instance.authToken = ""
+        AuthService.instance.userEmail = ""
+    }
 }
