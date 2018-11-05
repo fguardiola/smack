@@ -33,4 +33,41 @@ class UserDataService {
     func setAvatarName(avatarName:String){
         self.avatarName = avatarName
     }
+    /*This function will be used to convert the avatarcolor stored on data base with format of
+     "[0.5,0.5,0.5,1]" to an actual color we can use
+ */
+    func returnUIColor(components: String) -> UIColor {
+        let scanner = Scanner(string: components)
+        // characters to skip
+        let skipped = CharacterSet(charactersIn: "[], ")//skip brackets and white spaces
+        let comma = CharacterSet(charactersIn: ",") // used to scan till comma character
+        scanner.charactersToBeSkipped = skipped
+        
+        // create vars to store values from string
+        var r,g,b,a : NSString?
+        
+        scanner.scanUpToCharacters(from: comma, into: &r)
+        scanner.scanUpToCharacters(from: comma, into: &g)
+        scanner.scanUpToCharacters(from: comma, into: &b)
+        scanner.scanUpToCharacters(from: comma, into: &a)
+        
+        //set a default color in case something go wrong
+        let defaultColor = UIColor.lightGray
+        
+        //unwrap the values we need floats from the string components
+        guard let rUnwrapped = r else { return defaultColor }
+        guard let gUnwrapped = g else { return defaultColor }
+        guard let bUnwrapped = b else { return defaultColor }
+        guard let aUnwrapped = a else { return defaultColor }
+        
+        //get float values
+        let rfloat = CGFloat(rUnwrapped.doubleValue)
+        let gfloat = CGFloat(bUnwrapped.doubleValue)
+        let bfloat = CGFloat(gUnwrapped.doubleValue)
+        let afloat = CGFloat(aUnwrapped.doubleValue)
+        
+        let colorToReturn = UIColor(red: rfloat, green: gfloat, blue: bfloat, alpha: afloat)
+        
+        return colorToReturn
+    }
 }
