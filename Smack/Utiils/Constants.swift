@@ -9,12 +9,18 @@
 import Foundation
 //defining a type. We are saying that the copletion handler is a closure(Function that can be passed around in code)
 typealias CompletionHandler = (_ Success:Bool) ->()
+
 // Segues
 let TO_LOGIN = "toLogin"
 let TO_CREATE_ACCOUNT = "toCreateAccount"
 let UNWIND = "unwindToChannel"
 let TO_AVATAR_PICKER = "toAvatarPicker"
 
+// Colors
+let smackPurplePlaceholder = #colorLiteral(red: 0.3568627451, green: 0.6235294118, blue: 0.7960784314, alpha: 0.5)
+
+//Notification constants
+let NOTIF_USER_DATA_DID_CHANGE = Notification.Name("notifUserDatChanged")
 // User defaults
 
 let TOKEN_KEY = "token"
