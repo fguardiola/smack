@@ -229,7 +229,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="loginPressed:" destination="1hh-2p-wSq" eventType="touchUpInside" id="SNb-fy-PCJ"/>
+                                    <action selector="loginPressed:" destination="1hh-2p-wSq" eventType="touchUpInside" id="lfP-nJ-KZJ"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="DQi-H2-doR">
@@ -287,11 +287,16 @@
                                     <action selector="createAccountPressed:" destination="1hh-2p-wSq" eventType="touchUpInside" id="Tvf-hj-vzM"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="uuy-0v-rxN">
+                                <rect key="frame" x="169" y="215" width="37" height="37"/>
+                                <color key="color" red="0.35686274509999999" green="0.62352941179999999" blue="0.79607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="uJq-pN-OqC" firstAttribute="top" secondItem="ciP-6I-5I7" secondAttribute="top" constant="8" id="0Au-um-YBt"/>
                             <constraint firstItem="M9P-tK-swe" firstAttribute="top" secondItem="ciP-6I-5I7" secondAttribute="top" constant="60" id="1Ai-Ar-hK5"/>
+                            <constraint firstItem="uuy-0v-rxN" firstAttribute="centerY" secondItem="po2-Qh-Uki" secondAttribute="centerY" constant="-100" id="K9Q-8Z-jy6"/>
                             <constraint firstItem="dIA-CG-fZt" firstAttribute="top" secondItem="DQi-H2-doR" secondAttribute="bottom" constant="40" id="Phe-Di-miV"/>
                             <constraint firstItem="RaG-o9-cfJ" firstAttribute="top" secondItem="dIA-CG-fZt" secondAttribute="bottom" id="QPp-PW-r8U"/>
                             <constraint firstItem="DQi-H2-doR" firstAttribute="top" secondItem="M9P-tK-swe" secondAttribute="bottom" constant="40" id="TZd-ZD-AbX"/>
@@ -300,10 +305,14 @@
                             <constraint firstItem="ciP-6I-5I7" firstAttribute="trailing" secondItem="uJq-pN-OqC" secondAttribute="trailing" constant="20" id="a13-TY-DNK"/>
                             <constraint firstItem="M9P-tK-swe" firstAttribute="centerX" secondItem="po2-Qh-Uki" secondAttribute="centerX" id="jsW-8E-cN5"/>
                             <constraint firstItem="DQi-H2-doR" firstAttribute="centerX" secondItem="po2-Qh-Uki" secondAttribute="centerX" id="pRU-Da-nfW"/>
+                            <constraint firstItem="uuy-0v-rxN" firstAttribute="centerX" secondItem="po2-Qh-Uki" secondAttribute="centerX" id="xyV-Wx-qla"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ciP-6I-5I7"/>
                     </view>
                     <connections>
+                        <outlet property="passwordTxt" destination="4da-xM-VfM" id="aZQ-7A-DGb"/>
+                        <outlet property="spinner" destination="uuy-0v-rxN" id="oVZ-Fq-bJd"/>
+                        <outlet property="userEmailTxt" destination="Qx7-cU-dUG" id="nDi-ic-ihE"/>
                         <segue destination="Wdb-kR-W9d" kind="show" identifier="toCreateAccount" id="eoe-IL-ebP"/>
                     </connections>
                 </viewController>

@@ -20,8 +20,16 @@ class ChannelVC: UIViewController {
         // Add an observer to listen to usedata changes notifications
         NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.userDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
     }
+    // It can happen than when this view loads the notification didnt get here cause it wasn't instanciated so we wont see image and name 
+    override func viewDidAppear(_ animated: Bool) {
+        self.setUserData()
+    }
+   
     @objc func userDidChange(_ notif:Notification){
         //change UI if user is loggedIn
+       self.setUserData()
+    }
+    func setUserData(){
         if AuthService.instance.isLoggedIn{
             loginBtn.setTitle(UserDataService.instance.name, for: .normal)
             userImg.image = UIImage(named:UserDataService.instance.avatarName)
