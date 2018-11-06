@@ -28,6 +28,7 @@
 		538C747021906D6F0061A16A /* ProfileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 538C746E21906D6F0061A16A /* ProfileVC.xib */; };
 		538C74732190B3AD0061A16A /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538C74722190B3AD0061A16A /* MessageService.swift */; };
 		538C74752190B43F0061A16A /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538C74742190B43F0061A16A /* Channel.swift */; };
+		538C747721918B7D0061A16A /* channelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538C747621918B7D0061A16A /* channelCell.swift */; };
 		A1C981732F570A87EF5125F4 /* Pods_Smack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1F96B8B32954A7208E81DC /* Pods_Smack.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		538C746E21906D6F0061A16A /* ProfileVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileVC.xib; sourceTree = "<group>"; };
 		538C74722190B3AD0061A16A /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
 		538C74742190B43F0061A16A /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		538C747621918B7D0061A16A /* channelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = channelCell.swift; sourceTree = "<group>"; };
 		6C1F96B8B32954A7208E81DC /* Pods_Smack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Smack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AA86C11C2B2F00F7DF4826A /* Pods-Smack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Smack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Smack/Pods-Smack.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +152,7 @@
 				538C7461218C881E0061A16A /* RoundedButton.swift */,
 				538C7467218F6A700061A16A /* AvatarCell.swift */,
 				538C746B21904DD70061A16A /* RoundedImage.swift */,
+				538C747621918B7D0061A16A /* channelCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				538C7464218F4FB50061A16A /* UserDataService.swift in Sources */,
 				538C744D2189CA7E0061A16A /* SWRevealViewController.m in Sources */,
 				538C74592189FDD50061A16A /* Constants.swift in Sources */,
+				538C747721918B7D0061A16A /* channelCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
