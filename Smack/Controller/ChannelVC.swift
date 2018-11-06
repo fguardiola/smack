@@ -44,6 +44,12 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             userImg.backgroundColor = UIColor.clear
         }
     }
+    @IBAction func addChannelPressed(_ sender: Any) {
+        //Instanciate addChannelvc
+        let addChannelVC = AddChannelVC()
+        addChannelVC.modalPresentationStyle = .custom
+        present(addChannelVC, animated: true, completion: nil)
+    }
     @IBAction func loginBtnPressed(_ sender: Any) {
         if AuthService.instance.isLoggedIn{
             //present modal with profile info
