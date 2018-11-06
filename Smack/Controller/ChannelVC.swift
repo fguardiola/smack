@@ -23,6 +23,14 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         tableView.dataSource = self
         // Add an observer to listen to usedata changes notifications
         NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.userDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        
+        //listen to new channels through the socket
+        SocketService.instance.getChannel { (success) in
+            if success{
+                //reload channel data
+                self.tableView.reloadData()
+            }
+        }
     }
     // It can happen than when this view loads the notification didnt get here cause it wasn't instanciated so we wont see image and name 
     override func viewDidAppear(_ animated: Bool) {
