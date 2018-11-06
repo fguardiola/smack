@@ -23,6 +23,7 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         tableView.dataSource = self
         // Add an observer to listen to usedata changes notifications
         NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.userDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.channelsLoaded(_:)), name: NOTIF_CHANNELS_LOADED, object: nil)
         
         //listen to new channels through the socket
         SocketService.instance.getChannel { (success) in
@@ -41,6 +42,12 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         //change UI if user is loggedIn
        self.setUserData()
     }
+    
+    @objc func channelsLoaded(_ notif:Notification){
+        //Update when channels are loaded
+        tableView.reloadData()
+    }
+
     func setUserData(){
         if AuthService.instance.isLoggedIn{
             loginBtn.setTitle(UserDataService.instance.name, for: .normal)
@@ -50,13 +57,17 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             loginBtn.setTitle("login", for: .normal)
             userImg.image = UIImage(named: "profileDefault")
             userImg.backgroundColor = UIColor.clear
+            //if user logs out reloading data would clear channels and this function is fired by tenotfication
+            tableView.reloadData()
         }
     }
     @IBAction func addChannelPressed(_ sender: Any) {
-        //Instanciate addChannelvc
-        let addChannelVC = AddChannelVC()
-        addChannelVC.modalPresentationStyle = .custom
-        present(addChannelVC, animated: true, completion: nil)
+        //Instanciate addChannelvc. We should only be able to add and see channels if we are logged in
+        if AuthService.instance.isLoggedIn{
+            let addChannelVC = AddChannelVC()
+            addChannelVC.modalPresentationStyle = .custom
+            present(addChannelVC, animated: true, completion: nil)
+        }
     }
     @IBAction func loginBtnPressed(_ sender: Any) {
         if AuthService.instance.isLoggedIn{
@@ -93,5 +104,12 @@ class ChannelVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MessageService.instance.channels.count
     }
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        MessageService.instance.selectedChannel = MessageService.instance.channels[indexPath.row]
+        //send notification channel selected
+        NotificationCenter.default.post(name: NOTIF_CHANNEL_SELECTED, object: nil)
+        
+        //slide out menu
+        self.revealViewController()?.revealToggle(animated: true)
+    }
 }

@@ -37,6 +37,8 @@ class ProfileVC: UIViewController {
 
     @IBAction func logoutPressed(_ sender: Any) {
         UserDataService.instance.logUserOut()
+        //we can listen to this notification frm other iew controllers to update things
+        // for exmple clear channels on channelVC
         NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         self.dismiss(animated: true, completion: nil)
     }

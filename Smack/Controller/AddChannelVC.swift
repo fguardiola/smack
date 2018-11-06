@@ -38,7 +38,7 @@ class AddChannelVC: UIViewController {
     func setUpView (){
         //set placeholders and colors testfields
         nameTxt.attributedPlaceholder = NSAttributedString(string: "name", attributes: [NSAttributedString.Key.foregroundColor : smackPurplePlaceholder])
-        descriptionTxt.attributedPlaceholder = NSAttributedString(string: "name", attributes: [NSAttributedString.Key.foregroundColor : smackPurplePlaceholder])
+        descriptionTxt.attributedPlaceholder = NSAttributedString(string: "description", attributes: [NSAttributedString.Key.foregroundColor : smackPurplePlaceholder])
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         bgView.addGestureRecognizer(tapGesture)
