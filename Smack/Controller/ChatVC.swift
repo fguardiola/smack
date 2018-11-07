@@ -9,13 +9,19 @@
 import UIKit
 
 class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
-     //Outlets
+    @IBOutlet weak var sendButton: UIButton!
+    //Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var channelNameLbl: UILabel!
     @IBOutlet weak var menuBtn: UIButton!
+    
+    // Variables
+    var isTyping = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        //hidden at first
+        sendButton.isHidden = true
         //tableview
         
         tableView.delegate = self
@@ -23,6 +29,15 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableView.automaticDimension
         
+        //Socket listener
+        SocketService.instance.getChatMessage { (success) in
+            if success{
+                self.tableView.reloadData()
+                //scroll to bottom in case there are multiples messages
+                let endIndex = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+                self.tableView.scrollToRow(at: endIndex, at: .bottom, animated: false)
+            }
+        }
         
         //lift view when clicking on textfield
         view.bindToKeyboard()
@@ -82,6 +97,11 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
         }else {
            // change title label and show login
             channelNameLbl.text = "Please Log In"
+            //w'll get a notification when we logout. We have Cleared the messages. Reload table to reflect it
+            tableView.reloadData()
+           
+            
+            
         }
     }
     @objc func channelSelected(_ notif: Notification){
@@ -94,6 +114,21 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
         channelNameLbl.text = "#\(channelName)"
         self.getMessages()
 
+    }
+    
+    // MARK: -  Actions
+    @IBAction func messageTextEditing(_ sender: Any) {
+        if messageTxt.text == ""{
+            isTyping = false
+            sendButton.isHidden = true
+        }else{
+            if isTyping == false {
+                //first letter typed
+                sendButton.isHidden = false
+            }
+            
+            isTyping = true
+        }
     }
     @IBAction func sendBtnPressed(_ sender: Any) {
         //send actual message if user is logged in & there is some txt
