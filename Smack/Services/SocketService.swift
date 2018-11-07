@@ -81,5 +81,17 @@ class SocketService: NSObject {
                 
             }
     }
+    //closure is going to be clled with a dictionary
+    func getTypingUsers(_ completion: @escaping (_ typingUsers:[String: String])-> Void){
+        socket.on("userTypingUpdate") { (usersTypingArray, ack) in
+            guard let typingUsers = usersTypingArray[0] as? [String:String] else { return }
+            /*["userName":channelId,...]
+             The dictionary coming from the server
+             */
+           completion(typingUsers)
+            
+        }
+        
+    }
     
 }

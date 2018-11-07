@@ -8,8 +8,10 @@
 
 import UIKit
 
+
 class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var typingUsersLabel: UILabel!
     //Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTxt: UITextField!
@@ -29,7 +31,8 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableView.automaticDimension
         
-        //Socket listener
+        //Sockets listener
+        //new message
         SocketService.instance.getChatMessage { (success) in
             if success{
                 self.tableView.reloadData()
@@ -38,7 +41,37 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
                 self.tableView.scrollToRow(at: endIndex, at: .bottom, animated: false)
             }
         }
-        
+        // typing users
+        SocketService.instance.getTypingUsers { (typingUsers) in
+            //filter typingusers by right channel not including this user
+            guard let channelId = MessageService.instance.selectedChannel?.id else { return }
+            var numberUsersTyping = 0
+            var textForLabel =  ""
+            
+            for (typingUser, channel) in typingUsers{
+                //would be more safe with userId. @ people could have same name. Server return  names
+                if typingUser != UserDataService.instance.name && channelId == channel{
+                    //first user case
+                    if textForLabel == "" {
+                        textForLabel = "\(typingUser)"
+                    }else{
+                        textForLabel = "\(textForLabel),\(typingUser)"
+                    }
+                    numberUsersTyping += 1
+                }
+            }
+            if numberUsersTyping > 0 && AuthService.instance.isLoggedIn{
+                if(numberUsersTyping == 1){
+                    textForLabel = "\(textForLabel) is typing..."
+                }else {
+                    textForLabel = "\(textForLabel) are typing..."
+                }
+            }else{
+                textForLabel = ""
+            }
+            
+            self.typingUsersLabel.text = textForLabel
+        }
         //lift view when clicking on textfield
         view.bindToKeyboard()
         let tap = UITapGestureRecognizer(target: self, action: #selector(ChatVC.handleTap(_:)))
@@ -118,13 +151,21 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
     // MARK: -  Actions
     @IBAction func messageTextEditing(_ sender: Any) {
+        
+        //we hve to emit a user through socket to let other users know you're typing
+        //check this guard . what happen if youre not loggedin
+        guard let channelId = MessageService.instance.selectedChannel?.id else { return }
+        
         if messageTxt.text == ""{
             isTyping = false
             sendButton.isHidden = true
+            SocketService.instance.socket.emit("stopType", UserDataService.instance.name, channelId)
+            
         }else{
             if isTyping == false {
                 //first letter typed
                 sendButton.isHidden = false
+                 SocketService.instance.socket.emit("startType", UserDataService.instance.name, channelId)
             }
             
             isTyping = true
@@ -142,6 +183,7 @@ class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
                     //reset text field & dismss keyboard
                     self.messageTxt.text = ""
                     self.messageTxt.resignFirstResponder()
+                    SocketService.instance.socket.emit("stopType", UserDataService.instance.name, channelId)
                 }
                
             }
