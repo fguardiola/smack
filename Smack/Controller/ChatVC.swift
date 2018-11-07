@@ -44,7 +44,7 @@ class ChatVC: UIViewController {
     @objc func userDidChange(_ notification: Notification){
         if AuthService.instance.isLoggedIn{
             //get the channels. This notification is coming after login in\
-           self.onLoginGetMessages()
+            self.onLoginGetMessages()
         }else {
            // change title label and show login
             channelNameLbl.text = "Please Log In"
@@ -58,12 +58,36 @@ class ChatVC: UIViewController {
     func updateWithChannel(){
         let channelName = MessageService.instance.selectedChannel?.channelTitle ?? ""
         channelNameLbl.text = "#\(channelName)"
+        self.getMessages()
 
     }
     func onLoginGetMessages(){
         MessageService.instance.findAllChannels { (success) in
             if success{
+                // we could get messages here
                 //do stuff with channels
+                //we can check here if we have channels and if so get messages for that channel
+                if MessageService.instance.channels.count > 0 {
+                    MessageService.instance.selectedChannel = MessageService.instance.channels[0]
+                    //WE HAVE TO UPDATE LABEL. NEW CHANNEL SELECTED. Do the sam than channelSelected
+                    self.updateWithChannel()
+                }
+            }else{
+                //what about error handling
+                 self.channelNameLbl.text = "No channels yet"
+            }
+        }
+    }
+    
+    func getMessages(){
+        guard let channelId = MessageService.instance.selectedChannel?.id else { return }
+        
+        MessageService.instance.findAllMessagesForChannel(channelId: channelId) { (success) in
+            //Do something with messges
+            if success {
+                print(MessageService.instance.messages)
+            }else{
+                print("No messages")
             }
         }
     }
