@@ -8,13 +8,22 @@
 
 import UIKit
 
-class ChatVC: UIViewController {
-    //Outlets
+class ChatVC: UIViewController,UITableViewDelegate,UITableViewDataSource{
+     //Outlets
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var channelNameLbl: UILabel!
     @IBOutlet weak var menuBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //tableview
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableView.automaticDimension
+        
+        
         //lift view when clicking on textfield
         view.bindToKeyboard()
         let tap = UITapGestureRecognizer(target: self, action: #selector(ChatVC.handleTap(_:)))
@@ -44,7 +53,23 @@ class ChatVC: UIViewController {
 //            
 //        }
     }
-    
+    // MARK: - Tableview methods
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return MessageService.instance.messages.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let messages = MessageService.instance.messages
+        //create cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell{
+            cell.configCell(message: messages[indexPath.row])
+            return cell
+        }
+        return UITableViewCell()
+    }
+   
     //gesture recognizer handler
     @objc func handleTap(_ recognizer: UITapGestureRecognizer){
         //dismiss keboard
@@ -112,6 +137,7 @@ class ChatVC: UIViewController {
             //Do something with messges
             if success {
                 print(MessageService.instance.messages)
+                self.tableView.reloadData()
             }else{
                 print("No messages")
             }
