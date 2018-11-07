@@ -10,12 +10,15 @@ import UIKit
 
 class ChatVC: UIViewController {
     //Outlets
-    
+    @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var channelNameLbl: UILabel!
     @IBOutlet weak var menuBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //lift view when clicking on textfield
+        view.bindToKeyboard()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ChatVC.handleTap(_:)))
+        view.addGestureRecognizer(tap)
         //Add action to button
         menuBtn.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         
@@ -41,6 +44,12 @@ class ChatVC: UIViewController {
 //            
 //        }
     }
+    
+    //gesture recognizer handler
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer){
+        //dismiss keboard
+        view.endEditing(true)
+    }
     @objc func userDidChange(_ notification: Notification){
         if AuthService.instance.isLoggedIn{
             //get the channels. This notification is coming after login in\
@@ -60,6 +69,23 @@ class ChatVC: UIViewController {
         channelNameLbl.text = "#\(channelName)"
         self.getMessages()
 
+    }
+    @IBAction func sendBtnPressed(_ sender: Any) {
+        //send actual message if user is logged in & there is some txt
+        if AuthService.instance.isLoggedIn{
+            let user = UserDataService.instance
+            guard let channelId = MessageService.instance.selectedChannel?.id else {return}
+            guard let messageBody = messageTxt.text else { return }
+            SocketService.instance.addMessage(messageBody: messageBody, userId: user.id, channelId: channelId) { (success) in
+                if(success){
+                     print("Message Sent!!")
+                    //reset text field & dismss keyboard
+                    self.messageTxt.text = ""
+                    self.messageTxt.resignFirstResponder()
+                }
+               
+            }
+        }
     }
     func onLoginGetMessages(){
         MessageService.instance.findAllChannels { (success) in
